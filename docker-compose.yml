@@ -1,0 +1,30 @@
+version: "3.5"
+
+services:
+  php_fpm:
+      build: .
+      container_name: blog_php_fpm
+      working_dir: /application
+      volumes:
+          - ./application:/application
+      ports:
+          - "9000:9000"
+
+  nginx:
+      image: nginx:1.15
+      container_name: blog_nginx
+      working_dir: /application
+      ports:
+          - "80:80"
+      volumes:
+          - ./application:/application
+          - ./config/nginx/:/etc/nginx/conf.d/
+
+  mysql:
+      image: mysql:5.7
+      container_name: blog_mysql
+      environment:
+        - MYSQL_DATABASE=blog
+        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_USER=blog
+        - MYSQL_PASSWORD=password
